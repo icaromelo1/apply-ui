@@ -1,0 +1,189 @@
+/* Tokens do design "Painel Apply" — escuro é o padrão, claro recalcula contraste. */
+
+:root {
+  --fonte-ui: "Sora", system-ui, -apple-system, sans-serif;
+  --fonte-mono: "Spline Sans Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --fundo: #0f120d;
+  --superficie: #161a13;
+  --superficie-2: #12150f;
+  --superficie-alta: #22281e;
+  --borda: #2a3222;
+  --borda-forte: #3a4232;
+
+  --texto: #ecefe6;
+  --texto-2: #c8cfbe;
+  --apagado: #98a18c;
+  --apagado-2: #6b7362;
+
+  --acao: #a3e635;
+  --acao-tinta: #141a05;
+  --acao-fraca: #1e2a10;
+
+  --exige: #fbbf24;
+  --exige-fraca: #2a2210;
+  --travado: #f87171;
+  --travado-fraca: #2b1917;
+  --correndo: #34d399;
+  --correndo-fraca: #12281f;
+
+  --usd: #a3e635;
+  --eur: #7dd3fc;
+  --brl: #98a18c;
+
+  --raio: 14px;
+  --raio-p: 9px;
+  --toque: 44px;
+
+  --safe-topo: env(safe-area-inset-top, 0px);
+  --safe-base: env(safe-area-inset-bottom, 0px);
+  --safe-esq: env(safe-area-inset-left, 0px);
+  --safe-dir: env(safe-area-inset-right, 0px);
+  --altura-barra: 58px;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-tema="escuro"]) {
+    --fundo: #f6f7f3;
+    --superficie: #ffffff;
+    --superficie-2: #f0f2eb;
+    --superficie-alta: #eaeee1;
+    --borda: #dde2d4;
+    --borda-forte: #c9d1bd;
+
+    --texto: #171c12;
+    --texto-2: #39412f;
+    --apagado: #5f6853;
+    --apagado-2: #7c8570;
+
+    --acao: #65a30d;
+    --acao-tinta: #ffffff;
+    --acao-fraca: #eef5df;
+
+    --exige: #d97706;
+    --exige-fraca: #fdf1e0;
+    --travado: #dc2626;
+    --travado-fraca: #fdeaea;
+    --correndo: #059669;
+    --correndo-fraca: #e5f5ef;
+
+    --usd: #65a30d;
+    --eur: #0284c7;
+    --brl: #5f6853;
+  }
+}
+
+:root[data-tema="claro"] {
+  --fundo: #f6f7f3;
+  --superficie: #ffffff;
+  --superficie-2: #f0f2eb;
+  --superficie-alta: #eaeee1;
+  --borda: #dde2d4;
+  --borda-forte: #c9d1bd;
+
+  --texto: #171c12;
+  --texto-2: #39412f;
+  --apagado: #5f6853;
+  --apagado-2: #7c8570;
+
+  --acao: #65a30d;
+  --acao-tinta: #ffffff;
+  --acao-fraca: #eef5df;
+
+  --exige: #d97706;
+  --exige-fraca: #fdf1e0;
+  --travado: #dc2626;
+  --travado-fraca: #fdeaea;
+  --correndo: #059669;
+  --correndo-fraca: #e5f5ef;
+
+  --usd: #65a30d;
+  --eur: #0284c7;
+  --brl: #5f6853;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--fundo);
+  color: var(--texto);
+  font-family: var(--fonte-ui);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: none;
+}
+
+body {
+  min-height: 100dvh;
+}
+
+/* Nenhum texto de interface abaixo de 13px — regra do design. */
+small,
+.miudo {
+  font-size: 13px;
+}
+
+.mono {
+  font-family: var(--fonte-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.rotulo {
+  font-family: var(--fonte-mono);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--apagado);
+}
+
+.cartao {
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+}
+
+/* Todo alvo tocável respeita 44px. */
+.toque {
+  min-height: var(--toque);
+  min-width: var(--toque);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+a {
+  color: var(--acao);
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--acao);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
