@@ -1,5 +1,14 @@
 <script setup lang="ts">
-const { funil, fontes, fila, etapas } = useDados();
+const { funil: buscarFunil, fontes: buscarFontes, fila: buscarFila, etapas: buscarEtapas } = useApi();
+const { dados: funilD, estado } = buscarFunil();
+const { dados: fontesD } = buscarFontes();
+const { dados: filaD } = buscarFila();
+const { dados: etapasD } = buscarEtapas();
+
+const funil = computed(() => funilD.value);
+const fontes = computed(() => fontesD.value ?? []);
+const fila = computed(() => filaD.value ?? []);
+const etapas = computed(() => etapasD.value ?? []);
 
 useHead({ title: "Hoje · Apply" });
 
@@ -8,10 +17,10 @@ const periodo = ref<"7d" | "30d" | "tudo">("7d");
 
 const pendencias = computed(() => {
   const itens: { texto: string; para: string; acao: string }[] = [];
-  if (fila.length) itens.push({ texto: `${fila.length} candidaturas travadas`, para: "/acao", acao: "fila" });
+  if (fila.value.length) itens.push({ texto: `${fila.value.length} candidaturas travadas`, para: "/acao", acao: "fila" });
   itens.push({ texto: "2 assistidas para revisar", para: "/acao", acao: "revisar" });
 
-  const comPrazo = etapas.filter((e) => e.dependeDeVoce && e.prazo && e.prazo !== "sem prazo");
+  const comPrazo = etapas.value.filter((e) => e.dependeDeVoce && e.prazo && e.prazo !== "sem prazo");
   if (comPrazo.length) {
     itens.push({ texto: `${comPrazo.length} teste vence amanhã`, para: "/etapas", acao: "etapas" });
   }
@@ -20,17 +29,21 @@ const pendencias = computed(() => {
 
 const total = computed(() => pendencias.value.reduce((s, p) => s + (Number.parseInt(p.texto) || 1), 0));
 
-const passos = computed(() => [
-  { rotulo: "encontradas", valor: funil.encontradas },
-  { rotulo: "pontuadas", valor: funil.pontuadas },
-  { rotulo: "na fila", valor: funil.naFila },
-  { rotulo: "enviadas", valor: funil.enviadas, destaque: true },
-  { rotulo: "resposta", valor: funil.resposta },
-  { rotulo: "entrevista", valor: funil.entrevista, destaque: true },
-]);
+const passos = computed(() => {
+  const f = funil.value;
+  if (!f) return [];
+  return [
+    { rotulo: "encontradas", valor: f.encontradas },
+    { rotulo: "pontuadas", valor: f.pontuadas },
+    { rotulo: "na fila", valor: f.naFila },
+    { rotulo: "enviadas", valor: f.enviadas, destaque: true },
+    { rotulo: "resposta", valor: f.resposta },
+    { rotulo: "entrevista", valor: f.entrevista, destaque: true },
+  ];
+});
 
-const maior = computed(() => Math.max(...passos.value.map((p) => p.valor)));
-const ativas = computed(() => fontes.filter((f) => f.vagasHoje > 0 || f.pausada));
+const maior = computed(() => Math.max(1, ...passos.value.map((p) => p.valor)));
+const ativas = computed(() => fontes.value.filter((f) => f.vagasHoje > 0 || f.pausada));
 </script>
 
 <template>
@@ -71,7 +84,8 @@ const ativas = computed(() => fontes.filter((f) => f.vagasHoje > 0 || f.pausada)
         </div>
       </div>
 
-      <div class="cartao funil">
+      <EsqueletoLista v-if="estado === 'carregando'" :linhas="3" />
+      <div v-else class="cartao funil">
         <div v-for="p in passos" :key="p.rotulo" class="passo">
           <div class="passo-topo">
             <span class="miudo">{{ p.rotulo }}</span>

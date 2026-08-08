@@ -72,6 +72,42 @@ export interface Fonte {
   enviadasHoje: number;
 }
 
+export interface Funil {
+  encontradas: number;
+  pontuadas: number;
+  naFila: number;
+  enviadas: number;
+  resposta: number;
+  entrevista: number;
+}
+
+export interface Lacuna {
+  pergunta: string;
+  vezes: number;
+}
+
+export interface Skill {
+  nome: string;
+  anos: number;
+  nivel: string;
+}
+
+export interface Pretensao {
+  regime: string;
+  moeda: Moeda;
+  faixa: string;
+}
+
+export interface Curriculo {
+  id: string;
+  idioma: string;
+  titulo: string;
+  atualizado: string;
+  usos: number;
+  enfases: string[];
+  enfaseAtiva: string;
+}
+
 const vagas: Vaga[] = [
   {
     id: "brightflow-sr-fullstack",
@@ -364,7 +400,7 @@ const fontes: Fonte[] = [
   },
 ];
 
-const funil = {
+const funil: Funil = {
   encontradas: 412,
   pontuadas: 291,
   naFila: 48,
@@ -373,14 +409,14 @@ const funil = {
   entrevista: 3,
 };
 
-const lacunas = [
+const lacunas: Lacuna[] = [
   { pergunta: "visa sponsorship?", vezes: 3 },
   { pergunta: "notice period in weeks?", vezes: 2 },
   { pergunta: "GitHub with recent activity?", vezes: 1 },
   { pergunta: "willing to relocate to the US?", vezes: 1 },
 ];
 
-const skills = [
+const skills: Skill[] = [
   { nome: "TypeScript", anos: 5, nivel: "expert" },
   { nome: "Node.js / NestJS", anos: 5, nivel: "expert" },
   { nome: "Vue / Nuxt", anos: 4, nivel: "avançado" },
@@ -389,13 +425,13 @@ const skills = [
   { nome: "Kubernetes", anos: 2, nivel: "intermediário" },
 ];
 
-const pretensao = [
-  { regime: "Contractor · EUA", moeda: "USD" as Moeda, faixa: "5.000–7.000/mês" },
-  { regime: "CLT-equiv · Europa", moeda: "EUR" as Moeda, faixa: "45–60k/ano" },
-  { regime: "PJ · Brasil", moeda: "BRL" as Moeda, faixa: "12–15k/mês" },
+const pretensao: Pretensao[] = [
+  { regime: "Contractor · EUA", moeda: "USD", faixa: "5.000–7.000/mês" },
+  { regime: "CLT-equiv · Europa", moeda: "EUR", faixa: "45–60k/ano" },
+  { regime: "PJ · Brasil", moeda: "BRL", faixa: "12–15k/mês" },
 ];
 
-const curriculos = [
+const curriculos: Curriculo[] = [
   {
     id: "en",
     idioma: "EN",

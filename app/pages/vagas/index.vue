@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type { Vaga } from "~/composables/useDados";
 
-const { vagas } = useDados();
+const { vagas: buscarVagas } = useApi();
+const { dados, estado, carimbo } = buscarVagas();
+const vagas = computed(() => dados.value ?? []);
 
 useHead({ title: "Vagas · Apply" });
 
@@ -29,7 +31,7 @@ function ordenarPor(c: Coluna) {
 }
 
 const filtradas = computed(() => {
-  const lista = vagas
+  const lista = vagas.value
     .filter((v) => (notaMinima.value ? v.nota >= 70 : true))
     .filter((v) => (moedas.value.length ? moedas.value.includes(v.moeda) : true))
     .filter((v) => (soNovas.value ? v.nova : true));
@@ -88,7 +90,17 @@ const COLUNAS: { chave: Coluna; rotulo: string }[] = [
         <span class="col-acoes rotulo">Ações</span>
       </div>
 
-      <div class="lista">
+      <EsqueletoLista v-if="estado === 'carregando'" :linhas="4" />
+
+      <p v-else-if="estado === 'cache'" class="miudo do-cache">
+        Mostrando o último estado conhecido de {{ new Date(carimbo!).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) }}.
+      </p>
+
+      <p v-else-if="estado === 'erro'" class="miudo do-erro">
+        Não deu para carregar as vagas. Toque para tentar de novo.
+      </p>
+
+      <div v-if="estado !== 'carregando'" class="lista">
         <!-- Celular: o cartão inteiro navega. Desktop: abre o painel lateral. -->
         <div
           v-for="v in filtradas"
@@ -118,7 +130,7 @@ const COLUNAS: { chave: Coluna; rotulo: string }[] = [
         </div>
       </div>
 
-      <p v-if="!filtradas.length" class="vazio miudo">Nenhuma vaga com esses filtros. Afrouxe um deles.</p>
+      <p v-if="estado !== 'carregando' && !filtradas.length" class="vazio miudo">Nenhuma vaga com esses filtros. Afrouxe um deles.</p>
     </div>
 
     <!-- Painel lateral do desktop: descrição + por-que-da-nota sem sair da lista. -->
@@ -292,6 +304,16 @@ h1 {
 .seta {
   color: var(--apagado-2);
   flex-shrink: 0;
+}
+
+.do-cache {
+  color: var(--exige);
+  margin: 0;
+}
+
+.do-erro {
+  color: var(--travado);
+  margin: 0;
 }
 
 .vazio {

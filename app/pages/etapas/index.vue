@@ -1,9 +1,11 @@
 <script setup lang="ts">
-const { etapas } = useDados();
+const { etapas: buscarEtapas } = useApi();
+const { dados, estado } = buscarEtapas();
+const etapas = computed(() => dados.value ?? []);
 useHead({ title: "Etapas · Apply" });
 
-const suas = computed(() => etapas.filter((e) => e.dependeDeVoce));
-const sozinhas = computed(() => etapas.filter((e) => !e.dependeDeVoce));
+const suas = computed(() => etapas.value.filter((e) => e.dependeDeVoce));
+const sozinhas = computed(() => etapas.value.filter((e) => !e.dependeDeVoce));
 </script>
 
 <template>
@@ -13,7 +15,9 @@ const sozinhas = computed(() => etapas.filter((e) => !e.dependeDeVoce));
       <p class="miudo carimbo">{{ etapas.length }} processos vivos · {{ suas.length }} dependem de você</p>
     </header>
 
-    <section>
+    <EsqueletoLista v-if="estado === 'carregando'" :linhas="3" />
+
+    <section v-if="estado !== 'carregando'">
       <h2 class="rotulo exige">Depende de você</h2>
       <div class="lista">
         <article v-for="e in suas" :key="e.id" class="cartao item exige-borda">
@@ -27,7 +31,7 @@ const sozinhas = computed(() => etapas.filter((e) => !e.dependeDeVoce));
       </div>
     </section>
 
-    <section>
+    <section v-if="estado !== 'carregando'">
       <h2 class="rotulo">Correndo sozinho</h2>
       <div class="lista">
         <article v-for="e in sozinhas" :key="e.id" class="cartao item">
