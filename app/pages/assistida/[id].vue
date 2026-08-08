@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const rota = useRoute();
 const { vagaPorId, passosAssistida } = useDados();
+const { desktop } = useLargura();
 
 const vaga = computed(() => vagaPorId(String(rota.params.id)));
 useHead({ title: () => `Assistida · ${vaga.value?.empresa ?? ""}` });
@@ -30,10 +31,46 @@ const faltaObrigatoria = computed(() =>
   passo.value ? passo.value.campos.some((c) => c.obrigatorio && !respostas[c.id]?.trim()) : false,
 );
 
-// Regra do design: o envio só existe depois do último passo, e nenhuma obrigatória pode estar vazia.
 const pendentesGlobais = computed(() =>
   passosAssistida.flatMap((p) => p.campos.filter((c) => c.obrigatorio && !respostas[c.id]?.trim())),
 );
+
+/**
+ * Regra do design, idêntica nas duas larguras: enviar só existe depois de tudo visto.
+ *
+ * No celular "visto" é ter avançado até a revisão. No desktop os passos viram
+ * âncoras de rolagem, então "visto" é ter cada seção passado pela viewport —
+ * senão bastaria rolar direto ao fim e enviar sem ler.
+ */
+const vistos = reactive<Set<string>>(new Set());
+const secoes = ref<HTMLElement[]>([]);
+let observador: IntersectionObserver | null = null;
+
+const todosVistos = computed(() => passosAssistida.every((p) => vistos.has(p.titulo)));
+const podeEnviar = computed(() => pendentesGlobais.value.length === 0 && (desktop.value ? todosVistos.value : true));
+
+watch([desktop, secoes], async () => {
+  observador?.disconnect();
+  if (!desktop.value) return;
+
+  await nextTick();
+  observador = new IntersectionObserver(
+    (entradas) => {
+      for (const e of entradas) {
+        if (e.isIntersecting) vistos.add((e.target as HTMLElement).dataset.passo ?? "");
+      }
+    },
+    { threshold: 0.4 },
+  );
+  for (const s of secoes.value) if (s) observador.observe(s);
+});
+
+onBeforeUnmount(() => observador?.disconnect());
+
+function irPara(titulo: string) {
+  const alvo = secoes.value.find((s) => s?.dataset.passo === titulo);
+  alvo?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
 
 function avancar() {
   if (faltaObrigatoria.value) return;
@@ -59,17 +96,20 @@ function enviar() {
 }
 
 const totalCampos = computed(() => Object.values(respostas).filter((v) => v.trim()).length);
+const ehArea = (valor: string) => valor.length > 90;
 </script>
 
 <template>
-  <div v-if="vaga" class="tela">
+  <div v-if="vaga" class="tela" :class="{ largo: desktop && !enviado }">
     <!-- 3 · CONFIRMAÇÃO — recibo do que saiu, e o que vem depois -->
     <template v-if="enviado">
       <div class="recibo">
         <Icone nome="concluido" :tamanho="52" class="ok" />
         <h1>Candidatura enviada</h1>
         <p class="miudo sub">{{ vaga.empresa }} · {{ vaga.titulo }}</p>
-        <p class="miudo apagado">{{ new Date().toLocaleString("pt-BR", { dateStyle: "medium", timeStyle: "short" }) }} · via {{ vaga.fonte }}</p>
+        <p class="miudo apagado">
+          {{ new Date().toLocaleString("pt-BR", { dateStyle: "medium", timeStyle: "short" }) }} · via {{ vaga.fonte }}
+        </p>
 
         <dl class="cartao resumo">
           <div><dt class="miudo">Campos enviados</dt><dd class="mono">{{ totalCampos }}</dd></div>
@@ -87,109 +127,192 @@ const totalCampos = computed(() => Object.values(respostas).filter((v) => v.trim
     </template>
 
     <template v-else>
-      <CabecalhoDetalhe :voltar-para="`/vagas/${vaga.id}`" voltar-rotulo="à vaga" />
-
-      <header class="topo">
-        <strong>{{ vaga.empresa }} · {{ vaga.titulo }}</strong>
-        <span class="miudo apagado">rascunho salvo automaticamente</span>
-      </header>
-
-      <!-- Progresso sempre visível: quantos passos, onde estou, o que falta. -->
-      <div class="progresso">
-        <div class="barra">
-          <span
-            v-for="n in totalPassos"
-            :key="n"
-            class="segmento"
-            :class="{ feito: n - 1 < indice, atual: n - 1 === indice }"
-          />
+      <!-- DESKTOP — a vaga fica ao lado, e os passos viram âncoras de rolagem -->
+      <aside v-if="desktop" class="contexto">
+        <CabecalhoDetalhe :voltar-para="`/vagas/${vaga.id}`" voltar-rotulo="à vaga" />
+        <div class="cartao ctx-cartao">
+          <NotaAderencia :nota="vaga.nota" tamanho="g" />
+          <h2>{{ vaga.titulo }}</h2>
+          <p class="miudo sub">{{ vaga.empresa }} · {{ vaga.local }} · via {{ vaga.fonte }}</p>
+          <FaixaMoeda :moeda="vaga.moeda" :faixa="vaga.faixa" />
+          <p class="descricao-ctx">{{ vaga.descricao }}</p>
         </div>
-        <div class="progresso-txt">
-          <span class="mono">Passo {{ indice + 1 }} de {{ totalPassos }}</span>
-          <span class="miudo">· {{ naRevisao ? "Revisão final" : passo?.titulo }}</span>
-          <span v-if="!naRevisao && emBranco" class="miudo alerta">{{ emBranco }} em branco</span>
-        </div>
-      </div>
 
-      <!-- 1 · UM PASSO POR VEZ, origem marcada, tudo editável -->
-      <template v-if="!naRevisao && passo">
-        <section v-for="campo in passo.campos" :key="campo.id" class="cartao campo">
-          <div class="campo-topo">
-            <label :for="campo.id" class="pergunta">
-              {{ campo.pergunta }}<span v-if="campo.obrigatorio" class="obr" aria-label="obrigatório"> *</span>
-            </label>
-            <OrigemResposta :origem="(origens[campo.id] as any)" />
-          </div>
+        <nav class="ancoras" aria-label="Passos">
+          <button
+            v-for="p in passosAssistida"
+            :key="p.titulo"
+            class="ancora"
+            :class="{ visto: vistos.has(p.titulo) }"
+            @click="irPara(p.titulo)"
+          >
+            <span class="marca-visto" aria-hidden="true">{{ vistos.has(p.titulo) ? "✓" : "○" }}</span>
+            {{ p.titulo }}
+          </button>
+        </nav>
+      </aside>
 
-          <p v-if="campo.nota && !respostas[campo.id]" class="miudo nota-campo">{{ campo.nota }}</p>
+      <div class="formulario">
+        <CabecalhoDetalhe v-if="!desktop" :voltar-para="`/vagas/${vaga.id}`" voltar-rotulo="à vaga" />
 
-          <!-- Escolha fechada: botões grandes, sem select nativo minúsculo -->
-          <div v-if="campo.opcoes" class="opcoes">
-            <button
-              v-for="o in campo.opcoes"
-              :key="o"
-              class="opcao"
-              :class="{ on: respostas[campo.id] === o }"
-              @click="responder(campo.id, o)"
-            >
-              {{ o }}
-            </button>
-          </div>
+        <header class="topo">
+          <strong>{{ vaga.empresa }} · {{ vaga.titulo }}</strong>
+          <span class="miudo apagado">rascunho salvo automaticamente</span>
+        </header>
 
-          <template v-else>
-            <textarea
-              v-if="editando === campo.id || campo.valor.length > 90"
-              :id="campo.id"
-              v-model="respostas[campo.id]"
-              class="entrada area"
-              rows="6"
+        <!-- CELULAR — progresso por passo -->
+        <div v-if="!desktop" class="progresso">
+          <div class="barra">
+            <span
+              v-for="n in totalPassos"
+              :key="n"
+              class="segmento"
+              :class="{ feito: n - 1 < indice, atual: n - 1 === indice }"
             />
-            <input v-else :id="campo.id" v-model="respostas[campo.id]" class="entrada" type="text" />
-
-            <div v-if="origens[campo.id] === 'ia'" class="botoes-ia">
-              <button class="mini" @click="editando = editando === campo.id ? null : campo.id">
-                {{ editando === campo.id ? "Pronto" : "Editar" }}
-              </button>
-              <button class="mini" @click="regenerar(campo.id)">Regenerar</button>
-            </div>
-          </template>
-        </section>
-      </template>
-
-      <!-- 2 · REVISÃO FINAL — só existe depois de todos os passos -->
-      <template v-else>
-        <section v-for="p in passosAssistida" :key="p.titulo" class="cartao grupo">
-          <div class="grupo-topo">
-            <strong>{{ p.titulo }}</strong>
-            <span class="mono miudo">{{ p.campos.length }} campos</span>
           </div>
-          <ul class="resumo-campos">
-            <li v-for="c in p.campos" :key="c.id">
-              <span class="miudo apagado">{{ c.pergunta }}</span>
-              <span class="valor" :class="{ vazio: !respostas[c.id] }">{{ respostas[c.id] || "— em branco" }}</span>
-            </li>
-          </ul>
-        </section>
+          <div class="progresso-txt">
+            <span class="mono">Passo {{ indice + 1 }} de {{ totalPassos }}</span>
+            <span class="miudo">· {{ naRevisao ? "Revisão final" : passo?.titulo }}</span>
+            <span v-if="!naRevisao && emBranco" class="miudo alerta">{{ emBranco }} em branco</span>
+          </div>
+        </div>
 
-        <p v-if="pendentesGlobais.length" class="bloqueio miudo">
-          {{ pendentesGlobais.length }} obrigatória(s) em branco — volte e responda antes de enviar.
-        </p>
-      </template>
+        <!-- DESKTOP — todos os passos empilhados, marcados conforme passam pela tela -->
+        <template v-if="desktop">
+          <section
+            v-for="p in passosAssistida"
+            :key="p.titulo"
+            ref="secoes"
+            :data-passo="p.titulo"
+            class="grupo-passo"
+          >
+            <h3 class="rotulo titulo-passo">{{ p.titulo }}</h3>
+            <div
+              v-for="campo in p.campos"
+              :key="campo.id"
+              class="cartao campo"
+            >
+              <div class="campo-topo">
+                <label :for="campo.id" class="pergunta">
+                  {{ campo.pergunta }}<span v-if="campo.obrigatorio" class="obr" aria-label="obrigatório"> *</span>
+                </label>
+                <OrigemResposta :origem="(origens[campo.id] as any)" />
+              </div>
 
-      <!-- Barra de ação: a primária continua no polegar -->
-      <div class="acoes-fixas">
-        <button v-if="indice > 0" class="botao secundario estreito" @click="voltar">Voltar</button>
+              <p v-if="campo.nota && !respostas[campo.id]" class="miudo nota-campo">{{ campo.nota }}</p>
 
-        <BotaoSegurar
-          v-if="naRevisao"
-          rotulo="Segure para enviar"
-          :desabilitado="pendentesGlobais.length > 0"
-          @concluido="enviar"
-        />
+              <div v-if="campo.opcoes" class="opcoes">
+                <button
+                  v-for="o in campo.opcoes"
+                  :key="o"
+                  class="opcao"
+                  :class="{ on: respostas[campo.id] === o }"
+                  @click="responder(campo.id, o)"
+                >
+                  {{ o }}
+                </button>
+              </div>
 
-        <button v-else class="botao principal" :disabled="faltaObrigatoria" @click="avancar">
-          {{ faltaObrigatoria ? "Responda a obrigatória" : "Próximo passo" }}
-        </button>
+              <template v-else>
+                <textarea
+                  v-if="ehArea(campo.valor)"
+                  :id="campo.id"
+                  v-model="respostas[campo.id]"
+                  class="entrada area"
+                  rows="5"
+                />
+                <input v-else :id="campo.id" v-model="respostas[campo.id]" class="entrada" type="text" />
+
+                <div v-if="origens[campo.id] === 'ia'" class="botoes-ia">
+                  <button class="mini" @click="regenerar(campo.id)">Regenerar</button>
+                </div>
+              </template>
+            </div>
+          </section>
+        </template>
+
+        <!-- CELULAR — um passo por vez -->
+        <template v-else-if="!naRevisao && passo">
+          <section v-for="campo in passo.campos" :key="campo.id" class="cartao campo">
+            <div class="campo-topo">
+              <label :for="campo.id" class="pergunta">
+                {{ campo.pergunta }}<span v-if="campo.obrigatorio" class="obr" aria-label="obrigatório"> *</span>
+              </label>
+              <OrigemResposta :origem="(origens[campo.id] as any)" />
+            </div>
+
+            <p v-if="campo.nota && !respostas[campo.id]" class="miudo nota-campo">{{ campo.nota }}</p>
+
+            <div v-if="campo.opcoes" class="opcoes">
+              <button
+                v-for="o in campo.opcoes"
+                :key="o"
+                class="opcao"
+                :class="{ on: respostas[campo.id] === o }"
+                @click="responder(campo.id, o)"
+              >
+                {{ o }}
+              </button>
+            </div>
+
+            <template v-else>
+              <textarea
+                v-if="editando === campo.id || ehArea(campo.valor)"
+                :id="campo.id"
+                v-model="respostas[campo.id]"
+                class="entrada area"
+                rows="6"
+              />
+              <input v-else :id="campo.id" v-model="respostas[campo.id]" class="entrada" type="text" />
+
+              <div v-if="origens[campo.id] === 'ia'" class="botoes-ia">
+                <button class="mini" @click="editando = editando === campo.id ? null : campo.id">
+                  {{ editando === campo.id ? "Pronto" : "Editar" }}
+                </button>
+                <button class="mini" @click="regenerar(campo.id)">Regenerar</button>
+              </div>
+            </template>
+          </section>
+        </template>
+
+        <!-- REVISÃO FINAL -->
+        <template v-if="desktop || naRevisao">
+          <h3 v-if="desktop" class="rotulo titulo-passo">Revisão final</h3>
+          <section v-for="p in passosAssistida" :key="`rev-${p.titulo}`" class="cartao grupo">
+            <div class="grupo-topo">
+              <strong>{{ p.titulo }}</strong>
+              <span class="mono miudo">{{ p.campos.length }} campos</span>
+            </div>
+            <ul class="resumo-campos">
+              <li v-for="c in p.campos" :key="c.id">
+                <span class="miudo apagado">{{ c.pergunta }}</span>
+                <span class="valor" :class="{ vazio: !respostas[c.id] }">{{ respostas[c.id] || "— em branco" }}</span>
+              </li>
+            </ul>
+          </section>
+
+          <p v-if="pendentesGlobais.length" class="bloqueio miudo">
+            {{ pendentesGlobais.length }} obrigatória(s) em branco — responda antes de enviar.
+          </p>
+          <p v-else-if="desktop && !todosVistos" class="bloqueio miudo">
+            Passe por todos os passos antes de enviar — {{ passosAssistida.length - vistos.size }} ainda não foram vistos.
+          </p>
+        </template>
+
+        <div class="acoes-fixas">
+          <button v-if="!desktop && indice > 0" class="botao secundario estreito" @click="voltar">Voltar</button>
+
+          <BotaoSegurar
+            v-if="desktop || naRevisao"
+            rotulo="Segure para enviar"
+            :desabilitado="!podeEnviar"
+            @concluido="enviar"
+          />
+
+          <button v-else class="botao principal" :disabled="faltaObrigatoria" @click="avancar">
+            {{ faltaObrigatoria ? "Responda a obrigatória" : "Próximo passo" }}
+          </button>
+        </div>
       </div>
     </template>
   </div>
@@ -200,6 +323,13 @@ const totalCampos = computed(() => Object.values(respostas).filter((v) => v.trim
   display: flex;
   flex-direction: column;
   gap: 14px;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
 }
 
 .topo {
@@ -251,6 +381,17 @@ const totalCampos = computed(() => Object.values(respostas).filter((v) => v.trim
   margin-left: auto;
   color: var(--exige);
   font-family: var(--fonte-mono);
+}
+
+.grupo-passo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  scroll-margin-top: 20px;
+}
+
+.titulo-passo {
+  margin: 12px 0 0;
 }
 
 .campo {
@@ -448,7 +589,6 @@ const totalCampos = computed(() => Object.values(respostas).filter((v) => v.trim
 }
 
 .ok {
-  font-size: 52px;
   color: var(--acao);
 }
 
@@ -465,6 +605,7 @@ const totalCampos = computed(() => Object.values(respostas).filter((v) => v.trim
 
 .resumo {
   width: 100%;
+  max-width: 30rem;
   margin: 20px 0 0;
   padding: 6px 14px;
   display: flex;
@@ -508,16 +649,92 @@ const totalCampos = computed(() => Object.values(respostas).filter((v) => v.trim
   display: flex;
   gap: 10px;
   width: 100%;
+  max-width: 30rem;
   margin-top: 22px;
 }
 
 @media (min-width: 900px) {
+  .tela.largo {
+    display: grid;
+    grid-template-columns: 20rem minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+  }
+
+  .contexto {
+    position: sticky;
+    top: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ctx-cartao {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .ctx-cartao h2 {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 4px 0 0;
+    line-height: 1.3;
+  }
+
+  .descricao-ctx {
+    margin: 4px 0 0;
+    color: var(--texto-2);
+    font-size: 13px;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    line-clamp: 6;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .ancoras {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .ancora {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-height: var(--toque);
+    padding: 0 12px;
+    border-radius: var(--raio-p);
+    color: var(--apagado);
+    font-size: 14px;
+    text-align: left;
+  }
+
+  .ancora:hover {
+    background: var(--superficie-alta);
+  }
+
+  .ancora.visto {
+    color: var(--acao);
+  }
+
+  .marca-visto {
+    font-family: var(--fonte-mono);
+    font-size: 12px;
+    width: 12px;
+  }
+
   .acoes-fixas {
     position: static;
     padding: 8px 0 0;
     background: none;
     border: none;
-    max-width: 520px;
+    max-width: 24rem;
   }
 }
 </style>

@@ -91,4 +91,5 @@ h2.rotulo { margin: 0 0 10px; }
 .cheia { position: fixed; inset: 0; z-index: 60; background: var(--visor-fundo); display: flex; flex-direction: column; padding: calc(var(--safe-topo) + 12px) 12px calc(var(--safe-base) + 12px); }
 .fechar { align-self: flex-end; color: var(--visor-tinta); }
 .moldura { flex: 1; display: grid; place-items: center; text-align: center; padding: 20px; }
+@media (min-width: 900px) { .lista { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); align-items: start; } }
 </style>

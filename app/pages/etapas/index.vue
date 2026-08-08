@@ -58,4 +58,5 @@ h2.exige { color: var(--exige); }
 .apagado { color: var(--apagado-2); font-family: var(--fonte-mono); }
 .desc { margin: 0; color: var(--texto-2); font-size: 14px; }
 .botao { min-height: var(--toque); padding: 0 18px; border-radius: var(--raio-p); background: var(--exige); color: var(--exige-tinta); font-weight: 600; font-size: 14px; }
+@media (min-width: 900px) { .lista { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); align-items: start; } }
 </style>
