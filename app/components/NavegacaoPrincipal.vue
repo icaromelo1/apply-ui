@@ -124,7 +124,7 @@ const ativo = (para: string) => (para === "/" ? rota.path === "/" : rota.path.st
   padding: 0 5px;
   border-radius: 999px;
   background: var(--exige);
-  color: #141a05;
+  color: var(--exige-tinta);
   font-size: 11px;
   font-weight: 600;
   display: flex;
@@ -202,7 +202,7 @@ const ativo = (para: string) => (para === "/" ? rota.path === "/" : rota.path.st
     padding: 1px 6px;
     border-radius: 999px;
     background: var(--exige);
-    color: #141a05;
+    color: var(--exige-tinta);
     font-size: 12px;
     font-weight: 600;
     text-align: center;

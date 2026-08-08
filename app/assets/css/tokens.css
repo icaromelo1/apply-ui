@@ -21,6 +21,7 @@
   --acao-fraca: #1e2a10;
 
   --exige: #fbbf24;
+  --exige-tinta: #141a05;
   --exige-fraca: #2a2210;
   --travado: #f87171;
   --travado-fraca: #2b1917;
@@ -30,6 +31,10 @@
   --usd: #a3e635;
   --eur: #7dd3fc;
   --brl: #98a18c;
+
+  /* Visor de print: preto em ambos os temas, de propósito. */
+  --visor-fundo: #000000;
+  --visor-tinta: #ffffff;
 
   --raio: 14px;
   --raio-p: 9px;
@@ -56,19 +61,20 @@
     --apagado: #5f6853;
     --apagado-2: #7c8570;
 
-    --acao: #65a30d;
+    --acao: #4d7c0f;
     --acao-tinta: #ffffff;
     --acao-fraca: #eef5df;
 
-    --exige: #d97706;
+    --exige: #b45309;
+    --exige-tinta: #ffffff;
     --exige-fraca: #fdf1e0;
-    --travado: #dc2626;
+    --travado: #b91c1c;
     --travado-fraca: #fdeaea;
-    --correndo: #059669;
+    --correndo: #047857;
     --correndo-fraca: #e5f5ef;
 
-    --usd: #65a30d;
-    --eur: #0284c7;
+    --usd: #4d7c0f;
+    --eur: #0369a1;
     --brl: #5f6853;
   }
 }
@@ -86,19 +92,20 @@
   --apagado: #5f6853;
   --apagado-2: #7c8570;
 
-  --acao: #65a30d;
+  --acao: #4d7c0f;
   --acao-tinta: #ffffff;
   --acao-fraca: #eef5df;
 
-  --exige: #d97706;
+  --exige: #b45309;
+  --exige-tinta: #ffffff;
   --exige-fraca: #fdf1e0;
-  --travado: #dc2626;
+  --travado: #b91c1c;
   --travado-fraca: #fdeaea;
-  --correndo: #059669;
+  --correndo: #047857;
   --correndo-fraca: #e5f5ef;
 
-  --usd: #65a30d;
-  --eur: #0284c7;
+  --usd: #4d7c0f;
+  --eur: #0369a1;
   --brl: #5f6853;
 }
 

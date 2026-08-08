@@ -93,7 +93,7 @@ onBeforeUnmount(() => {
   padding: 0 4px;
   border-radius: 999px;
   background: var(--exige);
-  color: #141a05;
+  color: var(--exige-tinta);
   font-size: 11px;
   font-weight: 600;
   display: flex;

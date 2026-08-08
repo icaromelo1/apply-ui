@@ -88,7 +88,7 @@ h2.rotulo { margin: 0 0 10px; }
 .botao { flex: 1; min-height: var(--toque); border-radius: var(--raio-p); font-weight: 600; font-size: 14px; }
 .principal { background: var(--acao); color: var(--acao-tinta); }
 .secundario { background: var(--superficie-alta); color: var(--texto); border: 1px solid var(--borda-forte); }
-.cheia { position: fixed; inset: 0; z-index: 60; background: #000; display: flex; flex-direction: column; padding: calc(var(--safe-topo) + 12px) 12px calc(var(--safe-base) + 12px); }
-.fechar { align-self: flex-end; color: #fff; }
+.cheia { position: fixed; inset: 0; z-index: 60; background: var(--visor-fundo); display: flex; flex-direction: column; padding: calc(var(--safe-topo) + 12px) 12px calc(var(--safe-base) + 12px); }
+.fechar { align-self: flex-end; color: var(--visor-tinta); }
 .moldura { flex: 1; display: grid; place-items: center; text-align: center; padding: 20px; }
 </style>
