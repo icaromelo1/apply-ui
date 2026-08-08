@@ -4,6 +4,12 @@ export default defineNuxtConfig({
   modules: ["nuxt-quasar-ui", "@vite-pwa/nuxt"],
   css: ["~/assets/css/tokens.css"],
 
+  runtimeConfig: {
+    // APPLY_SENHA_HASH e APPLY_SEGREDO_SESSAO no ambiente. Sem eles nao ha login.
+    senhaHash: "",
+    segredoSessao: "",
+  },
+
   quasar: {
     plugins: ["Notify", "Dialog"],
     config: { dark: true },
@@ -71,6 +77,7 @@ export default defineNuxtConfig({
     },
     workbox: {
       navigateFallback: "/",
+      navigateFallbackDenylist: [/^\/entrar/, /^\/api\//],
       // Push e deep link vivem aqui: a estrategia generateSW nao deixa editar o SW.
       importScripts: ["/sw-avisos.js"],
       globPatterns: ["**/*.{js,css,html,png,svg,woff2}"],

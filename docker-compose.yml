@@ -3,15 +3,16 @@ services:
     build: .
     container_name: apply-ui
     restart: unless-stopped
+    environment:
+      # O painel expõe dados pessoais — a barreira agora é a tela de login.
+      NUXT_SENHA_HASH: ${APPLY_SENHA_HASH}
+      NUXT_SEGREDO_SESSAO: ${APPLY_SEGREDO_SESSAO}
     networks: [web]
     labels:
       - traefik.enable=true
       - traefik.http.routers.apply-ui.rule=Host(`apply.icaromelodev.com.br`)
       - traefik.http.routers.apply-ui.entrypoints=websecure
       - traefik.http.routers.apply-ui.tls.certresolver=le
-      # O painel expõe dados pessoais (nome, telefone, pretensão) — nunca público.
-      - traefik.http.routers.apply-ui.middlewares=apply-auth
-      - traefik.http.middlewares.apply-auth.basicauth.users=${APPLY_AUTH}
       - traefik.http.services.apply-ui.loadbalancer.server.port=3000
 networks:
   web: {external: true}

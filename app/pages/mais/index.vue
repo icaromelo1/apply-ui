@@ -9,6 +9,11 @@ watch(tema, (t) => {
   else raiz.setAttribute("data-tema", t);
 });
 
+async function sair() {
+  await $fetch("/api/sessao/sair", { method: "POST" });
+  await navigateTo("/entrar", { external: true });
+}
+
 const destinos = [
   { para: "/fontes", rotulo: "Fontes", icone: "fontes", nota: "9 ativas · 2 pausadas" },
   { para: "/perfil", rotulo: "Perfil", icone: "perfil", nota: "4 lacunas" },
@@ -47,6 +52,11 @@ const destinos = [
       </div>
       <p class="nota miudo">Segue o sistema por padrão — claro de dia, escuro à noite.</p>
     </section>
+
+    <section>
+      <h2 class="rotulo">Sessão</h2>
+      <button class="cartao sair" @click="sair">Sair da conta</button>
+    </section>
   </div>
 </template>
 
@@ -64,4 +74,5 @@ h2.rotulo { margin: 0 0 10px; }
 .tema { flex: 1; min-height: var(--toque); border-radius: 999px; color: var(--apagado); font-family: var(--fonte-mono); }
 .tema.on { background: var(--acao-fraca); color: var(--acao); }
 .nota { color: var(--apagado); margin: 10px 0 0; }
+.sair { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 54px; color: var(--travado); font-size: 15px; font-weight: 600; }
 </style>
