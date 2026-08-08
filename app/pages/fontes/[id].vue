@@ -88,7 +88,7 @@ const JANELAS = ["24h", "72h", "7d", "30d"];
         </span>
       </div>
       <div class="adicionar">
-        <input v-model="novaPalavra" class="entrada" placeholder="nova palavra" @keyup.enter="adicionarPalavra" />
+        <input v-model="novaPalavra" class="entrada" aria-label="Nova palavra-chave" placeholder="nova palavra" @keyup.enter="adicionarPalavra" />
         <button class="mais" aria-label="Adicionar palavra" @click="adicionarPalavra">+</button>
       </div>
     </section>
@@ -104,7 +104,7 @@ const JANELAS = ["24h", "72h", "7d", "30d"];
         </span>
       </div>
       <div class="adicionar">
-        <input v-model="novoLocal" class="entrada" placeholder="novo local" @keyup.enter="adicionarLocal" />
+        <input v-model="novoLocal" class="entrada" aria-label="Novo local" placeholder="novo local" @keyup.enter="adicionarLocal" />
         <button class="mais" aria-label="Adicionar local" @click="adicionarLocal">+</button>
       </div>
     </section>

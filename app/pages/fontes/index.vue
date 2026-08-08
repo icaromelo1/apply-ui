@@ -52,7 +52,7 @@ h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.03em; margin: 0; }
 .carimbo { color: var(--apagado); margin: 2px 0 0; }
 .lista { display: flex; flex-direction: column; gap: 10px; }
 .fonte { padding: 14px; display: flex; flex-direction: column; gap: 11px; }
-.fonte.off { opacity: 0.82; }
+.fonte.off { border-style: dashed; }
 .topo { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
 .ident { display: flex; flex-direction: column; gap: 1px; }
 .tipo { color: var(--apagado-2); font-family: var(--fonte-mono); }

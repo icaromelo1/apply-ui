@@ -74,20 +74,22 @@ const COLUNAS: { chave: Coluna; rotulo: string }[] = [
       </div>
 
       <!-- Cabeçalho de ordenação: só aparece na largura de tabela. -->
-      <div class="cabecalho-tabela" role="row">
+      <div class="cabecalho-tabela" role="group" aria-label="Ordenar lista">
+        <div v-for="c in COLUNAS" :key="c.chave" :class="`col-${c.chave}`">
         <button
-          v-for="c in COLUNAS"
-          :key="c.chave"
           class="col-titulo rotulo"
-          :class="[`col-${c.chave}`, { on: coluna === c.chave }]"
-          :aria-sort="coluna === c.chave ? (descendente ? 'descending' : 'ascending') : 'none'"
+          :class="{ on: coluna === c.chave }"
+          :aria-label="coluna === c.chave
+            ? `Ordenado por ${c.rotulo}, ${descendente ? 'maior primeiro' : 'menor primeiro'}. Inverter ordem.`
+            : `Ordenar por ${c.rotulo}`"
           @click="ordenarPor(c.chave)"
         >
           {{ c.rotulo }}
           <span v-if="coluna === c.chave" class="seta-ordem" aria-hidden="true">{{ descendente ? "▾" : "▴" }}</span>
         </button>
-        <span class="col-fonte rotulo">Fonte</span>
-        <span class="col-acoes rotulo">Ações</span>
+        </div>
+        <div class="col-fonte rotulo">Fonte</div>
+        <div class="col-acoes rotulo">Ações</div>
       </div>
 
       <EsqueletoLista v-if="estado === 'carregando'" :linhas="4" />
@@ -338,8 +340,14 @@ h1 {
     border-bottom: 1px solid var(--borda);
   }
 
+  .cabecalho-tabela > div {
+    display: flex;
+    align-items: center;
+  }
+
   .col-titulo {
     display: inline-flex;
+    width: 100%;
     align-items: center;
     gap: 4px;
     min-height: 32px;
@@ -355,8 +363,8 @@ h1 {
     flex: 0 0 42px;
   }
 
-  .col-titulo:nth-child(2) {
-    flex: 2;
+  .col-titulo {
+    flex: 1;
   }
 
   .col-empresa,

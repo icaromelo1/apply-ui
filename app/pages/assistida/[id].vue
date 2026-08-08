@@ -156,6 +156,7 @@ const ehArea = (valor: string) => valor.length > 90;
         <CabecalhoDetalhe v-if="!desktop" :voltar-para="`/vagas/${vaga.id}`" voltar-rotulo="à vaga" />
 
         <header class="topo">
+          <h1 class="titulo-tela">Candidatura assistida</h1>
           <strong>{{ vaga.empresa }} · {{ vaga.titulo }}</strong>
           <span class="miudo apagado">rascunho salvo automaticamente</span>
         </header>
@@ -336,6 +337,13 @@ const ehArea = (valor: string) => valor.length > 90;
   display: flex;
   flex-direction: column;
   gap: 2px;
+}
+
+.titulo-tela {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 2px;
 }
 
 .apagado {

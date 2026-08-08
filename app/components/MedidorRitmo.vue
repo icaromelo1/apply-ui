@@ -15,7 +15,14 @@ const cor = computed(() => (noLimite.value ? "var(--travado)" : perto.value ? "v
       <span class="mono valor" :style="{ color: cor }">{{ usado }}/{{ teto }}</span>
       <span v-if="intervalo" class="miudo intervalo">· intervalo {{ intervalo }}min</span>
     </div>
-    <div class="trilho" role="progressbar" :aria-valuenow="usado" :aria-valuemax="teto">
+    <div
+      class="trilho"
+      role="progressbar"
+      :aria-valuenow="usado"
+      :aria-valuemin="0"
+      :aria-valuemax="teto"
+      :aria-label="`Envios de hoje: ${usado} de ${teto}`"
+    >
       <div class="preenchido" :style="{ width: pct + '%', background: cor }" />
     </div>
     <p v-if="noLimite" class="miudo travou">Teto atingido — nada mais sai hoje por esta fonte.</p>
