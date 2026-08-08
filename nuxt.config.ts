@@ -71,6 +71,8 @@ export default defineNuxtConfig({
     },
     workbox: {
       navigateFallback: "/",
+      // Push e deep link vivem aqui: a estrategia generateSW nao deixa editar o SW.
+      importScripts: ["/sw-avisos.js"],
       globPatterns: ["**/*.{js,css,html,png,svg,woff2}"],
       runtimeCaching: [
         {
