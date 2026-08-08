@@ -1,18 +1,13 @@
 export default defineNuxtConfig({
   compatibilityDate: "2026-08-01",
   devtools: { enabled: false },
-  modules: ["nuxt-quasar-ui", "@vite-pwa/nuxt"],
+  modules: ["@vite-pwa/nuxt"],
   css: ["~/assets/css/tokens.css"],
 
   runtimeConfig: {
     // APPLY_SENHA_HASH e APPLY_SEGREDO_SESSAO no ambiente. Sem eles nao ha login.
     senhaHash: "",
     segredoSessao: "",
-  },
-
-  quasar: {
-    plugins: ["Notify", "Dialog"],
-    config: { dark: true },
   },
 
   app: {

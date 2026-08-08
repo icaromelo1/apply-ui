@@ -61,11 +61,11 @@ const destinos = [
 </template>
 
 <style scoped>
-.tela { display: flex; flex-direction: column; gap: 22px; }
-h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.03em; margin: 0; }
+.tela { display: flex; flex-direction: column; gap: 18px; }
+h1 { font-size: 25px; font-weight: 800; letter-spacing: -0.03em; margin: 0; }
 h2.rotulo { margin: 0 0 10px; }
 .lista { display: flex; flex-direction: column; gap: 9px; }
-.item { display: flex; align-items: center; gap: 13px; min-height: 62px; padding: 0 14px; color: var(--texto); }
+.item { display: flex; align-items: center; gap: 13px; min-height: 54px; padding: 0 14px; color: var(--texto); }
 .icone { color: var(--apagado); font-size: 22px; }
 .corpo { flex: 1; display: flex; flex-direction: column; gap: 1px; }
 .apagado { color: var(--apagado-2); }

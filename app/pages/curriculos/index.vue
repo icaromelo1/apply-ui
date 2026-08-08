@@ -52,8 +52,8 @@ const enfases = reactive(Object.fromEntries(curriculos.map((c) => [c.id, c.enfas
 
 <style scoped>
 .tela { display: flex; flex-direction: column; gap: 16px; }
-h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.03em; margin: 0; }
-.carimbo { color: var(--apagado); margin: 2px 0 0; }
+h1 { font-size: 25px; font-weight: 800; letter-spacing: -0.03em; margin: 0; }
+.carimbo { color: var(--apagado); margin: 1px 0 0; }
 .lista { display: flex; flex-direction: column; gap: 10px; }
 .cv { padding: 14px; display: flex; flex-direction: column; gap: 13px; }
 .topo { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }

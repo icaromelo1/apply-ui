@@ -61,9 +61,9 @@ const idioma = ref<"PT" | "EN">("PT");
 </template>
 
 <style scoped>
-.tela { display: flex; flex-direction: column; gap: 22px; }
+.tela { display: flex; flex-direction: column; gap: 18px; }
 .cabeca { display: flex; align-items: center; gap: 12px; }
-h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.03em; margin: 0; }
+h1 { font-size: 25px; font-weight: 800; letter-spacing: -0.03em; margin: 0; }
 .idiomas { margin-left: auto; display: flex; gap: 4px; background: var(--superficie); border: 1px solid var(--borda); border-radius: 999px; padding: 3px; }
 .idioma { min-height: 36px; padding: 0 14px; border-radius: 999px; color: var(--apagado); font-family: var(--fonte-mono); }
 .idioma.on { background: var(--acao-fraca); color: var(--acao); }

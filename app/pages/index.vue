@@ -126,7 +126,7 @@ const ativas = computed(() => fontes.value.filter((f) => f.vagasHoje > 0 || f.pa
 .tela {
   display: flex;
   flex-direction: column;
-  gap: 26px;
+  gap: 18px;
 }
 
 .cabeca-tela {
@@ -137,7 +137,7 @@ const ativas = computed(() => fontes.value.filter((f) => f.vagasHoje > 0 || f.pa
 }
 
 h1 {
-  font-size: 30px;
+  font-size: 25px;
   font-weight: 800;
   letter-spacing: -0.03em;
   margin: 0;
@@ -151,7 +151,7 @@ h2 {
 
 .carimbo {
   color: var(--apagado);
-  margin: 2px 0 0;
+  margin: 1px 0 0;
 }
 
 .exige-bloco {

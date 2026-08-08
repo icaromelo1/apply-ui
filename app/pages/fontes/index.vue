@@ -48,8 +48,8 @@ const semCred = computed(() => fontes.filter((f) => f.semCredencial).length);
 
 <style scoped>
 .tela { display: flex; flex-direction: column; gap: 16px; }
-h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.03em; margin: 0; }
-.carimbo { color: var(--apagado); margin: 2px 0 0; }
+h1 { font-size: 25px; font-weight: 800; letter-spacing: -0.03em; margin: 0; }
+.carimbo { color: var(--apagado); margin: 1px 0 0; }
 .lista { display: flex; flex-direction: column; gap: 10px; }
 .fonte { padding: 14px; display: flex; flex-direction: column; gap: 11px; }
 .fonte.off { border-style: dashed; }

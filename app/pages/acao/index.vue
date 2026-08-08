@@ -71,9 +71,9 @@ const assistidasPendentes = [
 </template>
 
 <style scoped>
-.tela { display: flex; flex-direction: column; gap: 24px; }
-h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.03em; margin: 0; }
-.carimbo { color: var(--apagado); margin: 2px 0 0; }
+.tela { display: flex; flex-direction: column; gap: 18px; }
+h1 { font-size: 25px; font-weight: 800; letter-spacing: -0.03em; margin: 0; }
+.carimbo { color: var(--apagado); margin: 1px 0 0; }
 h2.rotulo { margin: 0 0 10px; }
 .lista { display: flex; flex-direction: column; gap: 9px; }
 .item { display: flex; align-items: center; gap: 12px; padding: 13px 14px; color: var(--texto); }
