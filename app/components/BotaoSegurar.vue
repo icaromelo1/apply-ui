@@ -11,6 +11,10 @@ let inicio = 0;
 let quadro: number | null = null;
 
 function avancar() {
+  // Um quadro pode estar agendado quando o dedo sai; sem esta guarda ele
+  // concluiria a acao depois do cancelamento.
+  if (!segurando.value) return;
+
   const decorrido = performance.now() - inicio;
   progresso.value = Math.min(1, decorrido / props.duracao);
 

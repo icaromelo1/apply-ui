@@ -9,7 +9,9 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "typecheck": "nuxt typecheck"
+    "typecheck": "nuxt typecheck",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "keywords": [],
   "author": "",
@@ -22,11 +24,17 @@
     "vue-router": "^5.2.0"
   },
   "devDependencies": {
+    "@nuxt/test-utils": "^4.1.0",
     "@quasar/extras": "^2.0.3",
     "@vite-pwa/nuxt": "^1.1.1",
+    "@vitejs/plugin-vue": "^6.0.8",
+    "@vue/test-utils": "^2.4.11",
+    "happy-dom": "^20.11.2",
     "nuxt-quasar-ui": "^3.1.0",
     "quasar": "^2.24.0",
     "typescript": "~5.9",
+    "unplugin-auto-import": "^21.1.0",
+    "vitest": "^4.1.10",
     "vue-tsc": "^3.3.9"
   }
 }
