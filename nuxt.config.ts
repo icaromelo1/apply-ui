@@ -25,6 +25,20 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: "apple-touch-icon", href: "/icons/apple-touch-icon.png", sizes: "180x180" },
+        { rel: "apple-touch-startup-image", href: "/splash/splash-375x667-escuro.png", media: "(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait) and (prefers-color-scheme: dark)" },
+        { rel: "apple-touch-startup-image", href: "/splash/splash-375x667-claro.png", media: "(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait) and (prefers-color-scheme: light)" },
+        { rel: "apple-touch-startup-image", href: "/splash/splash-390x844-escuro.png", media: "(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)" },
+        { rel: "apple-touch-startup-image", href: "/splash/splash-390x844-claro.png", media: "(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)" },
+        { rel: "apple-touch-startup-image", href: "/splash/splash-393x852-escuro.png", media: "(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)" },
+        { rel: "apple-touch-startup-image", href: "/splash/splash-393x852-claro.png", media: "(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)" },
+        { rel: "apple-touch-startup-image", href: "/splash/splash-402x874-escuro.png", media: "(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)" },
+        { rel: "apple-touch-startup-image", href: "/splash/splash-402x874-claro.png", media: "(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)" },
+        { rel: "apple-touch-startup-image", href: "/splash/splash-428x926-escuro.png", media: "(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)" },
+        { rel: "apple-touch-startup-image", href: "/splash/splash-428x926-claro.png", media: "(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)" },
+        { rel: "apple-touch-startup-image", href: "/splash/splash-430x932-escuro.png", media: "(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)" },
+        { rel: "apple-touch-startup-image", href: "/splash/splash-430x932-claro.png", media: "(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)" },
+        { rel: "apple-touch-startup-image", href: "/splash/splash-440x956-escuro.png", media: "(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)" },
+        { rel: "apple-touch-startup-image", href: "/splash/splash-440x956-claro.png", media: "(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)" },
         { rel: "preconnect", href: "https://fonts.googleapis.com" },
         { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "" },
         {
@@ -52,6 +66,7 @@ export default defineNuxtConfig({
         { src: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
         { src: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
         { src: "/icons/icon-maskable-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
+        { src: "/icons/icon-escuro-512.png", sizes: "512x512", type: "image/png" },
       ],
     },
     workbox: {

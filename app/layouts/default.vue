@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const rota = useRoute();
 // Telas de detalhe trocam a barra de abas por voltar no topo + barra de ação própria.
-const telaDetalhe = computed(() => /^\/(vagas\/[^/]+|assistida)/.test(rota.path));
+const telaDetalhe = computed(() => /^\/(vagas\/[^/]+|fontes\/[^/]+|assistida)/.test(rota.path));
 </script>
 
 <template>

@@ -35,9 +35,12 @@ const ativas = computed(() => fontes.filter((f) => f.vagasHoje > 0 || f.pausada)
 
 <template>
   <div class="tela">
-    <header>
-      <h1>Hoje</h1>
-      <p class="miudo carimbo">{{ hoje }} · atualizado 09:41</p>
+    <header class="cabeca-tela">
+      <div>
+        <h1>Hoje</h1>
+        <p class="miudo carimbo">{{ hoje }} · atualizado 09:41</p>
+      </div>
+      <SinoAvisos />
     </header>
 
     <!-- Âmbar sempre acima da dobra: o que exige você vem primeiro. -->
@@ -110,6 +113,13 @@ const ativas = computed(() => fontes.filter((f) => f.vagasHoje > 0 || f.pausada)
   display: flex;
   flex-direction: column;
   gap: 26px;
+}
+
+.cabeca-tela {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 h1 {

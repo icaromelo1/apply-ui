@@ -64,7 +64,10 @@ export interface Fonte {
   tetoDiario: number;
   intervaloMin: number;
   palavras: string[];
+  locais: string[];
+  paginas: number;
   janela: string;
+  credencial?: string;
   vagasHoje: number;
   enviadasHoje: number;
 }
@@ -274,6 +277,8 @@ const fontes: Fonte[] = [
     tetoDiario: 10,
     intervaloMin: 20,
     palavras: ["typescript", "node"],
+    locais: ["remoto global"],
+    paginas: 3,
     janela: "72h",
     vagasHoje: 31,
     enviadasHoje: 4,
@@ -287,6 +292,8 @@ const fontes: Fonte[] = [
     tetoDiario: 8,
     intervaloMin: 45,
     palavras: ["full stack", "backend"],
+    locais: ["remoto", "EUA"],
+    paginas: 4,
     janela: "7d",
     vagasHoje: 18,
     enviadasHoje: 2,
@@ -300,6 +307,8 @@ const fontes: Fonte[] = [
     tetoDiario: 10,
     intervaloMin: 20,
     palavras: ["node", "vue"],
+    locais: ["remoto global"],
+    paginas: 3,
     janela: "72h",
     vagasHoje: 14,
     enviadasHoje: 0,
@@ -313,6 +322,8 @@ const fontes: Fonte[] = [
     tetoDiario: 6,
     intervaloMin: 30,
     palavras: ["node", "typescript"],
+    locais: ["Portugal", "Espanha", "remoto UE"],
+    paginas: 2,
     janela: "7d",
     vagasHoje: 9,
     enviadasHoje: 1,
@@ -321,12 +332,15 @@ const fontes: Fonte[] = [
     id: "ashby",
     nome: "Ashby",
     tipo: "ingest direto",
+    credencial: "token de API",
     ativa: false,
     pausada: "Pausada automaticamente: sinal de spam em 24 jul (18 envios/dia). Reativar exige novo teto ≤ 5/dia.",
     usadoHoje: 0,
     tetoDiario: 5,
     intervaloMin: 60,
     palavras: ["backend"],
+    locais: ["remoto", "EUA"],
+    paginas: 3,
     janela: "7d",
     vagasHoje: 0,
     enviadasHoje: 0,
@@ -335,12 +349,15 @@ const fontes: Fonte[] = [
     id: "linkedin",
     nome: "LinkedIn",
     tipo: "scraping",
+    credencial: "cookie de sessão",
     ativa: false,
     semCredencial: "credencial expirada — toque para renovar",
     usadoHoje: 0,
     tetoDiario: 6,
     intervaloMin: 40,
     palavras: ["senior backend node"],
+    locais: ["Brasil", "remoto"],
+    paginas: 4,
     janela: "7d",
     vagasHoje: 0,
     enviadasHoje: 0,
@@ -415,5 +432,6 @@ export function useDados() {
     curriculos,
     contadorAcao,
     vagaPorId: (id: string) => vagas.find((v) => v.id === id),
+    fontePorId: (id: string) => fontes.find((f) => f.id === id),
   };
 }

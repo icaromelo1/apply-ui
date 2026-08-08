@@ -38,8 +38,8 @@ const semCred = computed(() => fontes.filter((f) => f.semCredencial).length);
         </div>
 
         <div class="botoes">
-          <button class="botao secundario">Ver retorno cru</button>
-          <button class="botao secundario">{{ f.pausada ? "Reconfigurar" : "Configurar" }}</button>
+          <NuxtLink :to="`/fontes/${f.id}`" class="botao secundario">Ver retorno cru</NuxtLink>
+          <NuxtLink :to="`/fontes/${f.id}`" class="botao secundario">{{ f.pausada ? "Reconfigurar" : "Configurar" }}</NuxtLink>
         </div>
       </article>
     </div>
@@ -61,7 +61,7 @@ h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.03em; margin: 0; }
 .params { display: flex; gap: 7px; flex-wrap: wrap; }
 .chip { font-size: 12px; padding: 3px 9px; border-radius: 999px; background: var(--superficie-alta); color: var(--apagado); }
 .botoes { display: flex; gap: 9px; }
-.botao { flex: 1; min-height: var(--toque); border-radius: var(--raio-p); font-size: 14px; font-weight: 600; }
+.botao { flex: 1; min-height: var(--toque); border-radius: var(--raio-p); font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; }
 .secundario { background: var(--superficie-alta); color: var(--texto); border: 1px solid var(--borda-forte); }
 @media (min-width: 900px) { .lista { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); } }
 </style>
