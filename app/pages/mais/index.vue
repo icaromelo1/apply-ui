@@ -10,10 +10,10 @@ watch(tema, (t) => {
 });
 
 const destinos = [
-  { para: "/fontes", rotulo: "Fontes", icone: "cloud_download", nota: "9 ativas · 2 pausadas" },
-  { para: "/perfil", rotulo: "Perfil", icone: "badge", nota: "4 lacunas" },
-  { para: "/curriculos", rotulo: "Currículos", icone: "description", nota: "PT e EN" },
-  { para: "/avisos", rotulo: "Avisos", icone: "notifications", nota: "configurar" },
+  { para: "/fontes", rotulo: "Fontes", icone: "fontes", nota: "9 ativas · 2 pausadas" },
+  { para: "/perfil", rotulo: "Perfil", icone: "perfil", nota: "4 lacunas" },
+  { para: "/curriculos", rotulo: "Currículos", icone: "curriculo", nota: "PT e EN" },
+  { para: "/avisos", rotulo: "Avisos", icone: "aviso", nota: "configurar" },
 ];
 </script>
 
@@ -23,12 +23,12 @@ const destinos = [
 
     <div class="lista">
       <NuxtLink v-for="d in destinos" :key="d.para" :to="d.para" class="cartao item">
-        <span class="material-symbols-outlined icone">{{ d.icone }}</span>
+        <Icone :nome="d.icone" class="icone" />
         <div class="corpo">
           <strong>{{ d.rotulo }}</strong>
           <span class="miudo apagado">{{ d.nota }}</span>
         </div>
-        <span class="material-symbols-outlined seta" aria-hidden="true">chevron_right</span>
+        <Icone nome="direita" class="seta" />
       </NuxtLink>
     </div>
 

@@ -66,7 +66,7 @@ const totalCampos = computed(() => Object.values(respostas).filter((v) => v.trim
     <!-- 3 · CONFIRMAÇÃO — recibo do que saiu, e o que vem depois -->
     <template v-if="enviado">
       <div class="recibo">
-        <span class="material-symbols-outlined ok" aria-hidden="true">check_circle</span>
+        <Icone nome="concluido" :tamanho="52" class="ok" />
         <h1>Candidatura enviada</h1>
         <p class="miudo sub">{{ vaga.empresa }} · {{ vaga.titulo }}</p>
         <p class="miudo apagado">{{ new Date().toLocaleString("pt-BR", { dateStyle: "medium", timeStyle: "short" }) }} · via {{ vaga.fonte }}</p>

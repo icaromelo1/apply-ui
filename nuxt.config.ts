@@ -6,7 +6,6 @@ export default defineNuxtConfig({
 
   quasar: {
     plugins: ["Notify", "Dialog"],
-    extras: { fontIcons: ["material-symbols-outlined"] },
     config: { dark: true },
   },
 

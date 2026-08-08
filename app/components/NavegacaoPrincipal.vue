@@ -4,17 +4,17 @@ const rota = useRoute();
 
 // Celular: 5 destinos no polegar. Desktop: o trilho abre os secundários que moram em "Mais".
 const principais = [
-  { para: "/", rotulo: "Hoje", icone: "today" },
-  { para: "/vagas", rotulo: "Vagas", icone: "work_outline" },
-  { para: "/acao", rotulo: "Ação", icone: "pending_actions", contador: true },
-  { para: "/etapas", rotulo: "Etapas", icone: "timeline" },
+  { para: "/", rotulo: "Hoje", icone: "hoje" },
+  { para: "/vagas", rotulo: "Vagas", icone: "vagas" },
+  { para: "/acao", rotulo: "Ação", icone: "acao", contador: true },
+  { para: "/etapas", rotulo: "Etapas", icone: "etapas" },
 ];
 
 const secundarios = [
-  { para: "/fontes", rotulo: "Fontes", icone: "cloud_download" },
-  { para: "/perfil", rotulo: "Perfil", icone: "badge" },
-  { para: "/curriculos", rotulo: "Currículos", icone: "description" },
-  { para: "/avisos", rotulo: "Avisos", icone: "notifications" },
+  { para: "/fontes", rotulo: "Fontes", icone: "fontes" },
+  { para: "/perfil", rotulo: "Perfil", icone: "perfil" },
+  { para: "/curriculos", rotulo: "Currículos", icone: "curriculo" },
+  { para: "/avisos", rotulo: "Avisos", icone: "aviso" },
 ];
 
 const ativo = (para: string) => (para === "/" ? rota.path === "/" : rota.path.startsWith(para));
@@ -31,13 +31,13 @@ const ativo = (para: string) => (para === "/" ? rota.path === "/" : rota.path.st
       :class="{ ativo: ativo(d.para) }"
       :aria-current="ativo(d.para) ? 'page' : undefined"
     >
-      <span class="material-symbols-outlined icone">{{ d.icone }}</span>
+      <Icone :nome="d.icone" class="icone" />
       <span class="miudo">{{ d.rotulo }}</span>
       <span v-if="d.contador && contadorAcao > 0" class="mono contador">{{ contadorAcao }}</span>
     </NuxtLink>
 
     <NuxtLink to="/mais" class="destino" :class="{ ativo: ativo('/mais') }">
-      <span class="material-symbols-outlined icone">more_horiz</span>
+      <Icone nome="mais" :tamanho="22" class="icone" />
       <span class="miudo">Mais</span>
     </NuxtLink>
   </nav>
@@ -57,7 +57,7 @@ const ativo = (para: string) => (para === "/" ? rota.path === "/" : rota.path.st
       :class="{ ativo: ativo(d.para) }"
       :aria-current="ativo(d.para) ? 'page' : undefined"
     >
-      <span class="material-symbols-outlined">{{ d.icone }}</span>
+      <Icone :nome="d.icone" />
       {{ d.rotulo }}
       <span v-if="d.contador && contadorAcao > 0" class="mono contador-trilho">{{ contadorAcao }}</span>
     </NuxtLink>
@@ -65,7 +65,7 @@ const ativo = (para: string) => (para === "/" ? rota.path === "/" : rota.path.st
     <hr />
 
     <NuxtLink v-for="d in secundarios" :key="d.para" :to="d.para" class="item" :class="{ ativo: ativo(d.para) }">
-      <span class="material-symbols-outlined">{{ d.icone }}</span>
+      <Icone :nome="d.icone" />
       {{ d.rotulo }}
     </NuxtLink>
 
@@ -112,10 +112,7 @@ const ativo = (para: string) => (para === "/" ? rota.path === "/" : rota.path.st
   color: var(--acao);
 }
 
-.icone {
-  font-size: 22px;
-  line-height: 1;
-}
+.icone { color: inherit; }
 
 .contador {
   position: absolute;
@@ -197,10 +194,6 @@ const ativo = (para: string) => (para === "/" ? rota.path === "/" : rota.path.st
   .item.ativo {
     background: var(--acao-fraca);
     color: var(--acao);
-  }
-
-  .item .material-symbols-outlined {
-    font-size: 20px;
   }
 
   .contador-trilho {

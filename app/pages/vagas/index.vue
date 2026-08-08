@@ -48,7 +48,7 @@ const filtradas = computed(() =>
             <span class="miudo fonte">{{ v.fonte }}</span>
           </div>
         </div>
-        <span class="material-symbols-outlined seta" aria-hidden="true">chevron_right</span>
+        <Icone nome="direita" class="seta" />
       </NuxtLink>
     </div>
 

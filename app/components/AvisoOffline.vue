@@ -25,7 +25,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div v-if="!online" class="offline" role="status">
-    <span class="material-symbols-outlined">cloud_off</span>
+    <Icone nome="semRede" />
     <div>
       <strong class="miudo">Sem conexão — mostrando dados de {{ carimbo || "agora há pouco" }}</strong>
       <p class="miudo nota">Os números podem estar desatualizados. Ações abertas funcionam ao reconectar; nada se perde.</p>
@@ -52,8 +52,4 @@ onBeforeUnmount(() => {
   color: var(--texto-2);
 }
 
-.material-symbols-outlined {
-  font-size: 20px;
-  flex-shrink: 0;
-}
 </style>

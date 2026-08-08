@@ -25,7 +25,7 @@ const assistidasPendentes = [
             <strong>{{ a.empresa }} · {{ a.cargo }}</strong>
             <span class="miudo apagado">{{ a.passo }}</span>
           </div>
-          <span class="material-symbols-outlined seta" aria-hidden="true">chevron_right</span>
+          <Icone nome="direita" class="seta" />
         </NuxtLink>
       </div>
     </section>
@@ -46,7 +46,7 @@ const assistidasPendentes = [
 
           <!-- Recorte do print; toque abre em tela cheia com zoom. -->
           <button class="recorte" @click="ampliado = f.id">
-            <span class="material-symbols-outlined">image</span>
+            <Icone nome="imagem" />
             <span class="miudo">recorte do erro · toque para ampliar</span>
           </button>
 
@@ -61,7 +61,7 @@ const assistidasPendentes = [
     <!-- Tela cheia: pinça para zoom, o print inteiro sem moldura. -->
     <div v-if="ampliado" class="cheia" role="dialog" aria-label="Print da tela onde travou">
       <button class="fechar toque" aria-label="Fechar" @click="ampliado = null">
-        <span class="material-symbols-outlined">close</span>
+        <Icone nome="fechar" />
       </button>
       <div class="moldura">
         <p class="miudo apagado">print em tela cheia · pinça para zoom · duplo toque no campo com erro</p>

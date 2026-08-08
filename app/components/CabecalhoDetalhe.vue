@@ -5,7 +5,7 @@ defineProps<{ voltarPara: string; voltarRotulo: string }>();
 <template>
   <header class="topo">
     <NuxtLink :to="voltarPara" class="toque voltar">
-      <span class="material-symbols-outlined">arrow_back</span>
+      <Icone nome="voltar" />
       <span class="miudo">{{ voltarRotulo }}</span>
     </NuxtLink>
     <slot />
@@ -29,7 +29,4 @@ defineProps<{ voltarPara: string; voltarRotulo: string }>();
   padding-right: 8px;
 }
 
-.material-symbols-outlined {
-  font-size: 22px;
-}
 </style>
