@@ -1,21 +1,21 @@
-# Apply — painel
+# Apply: painel
 
-Painel de operação do [apply-service](https://github.com/icaroMelo1/apply-service): a
-interface onde as vagas encontradas, as candidaturas enviadas e as que exigem decisão
-humana ficam visíveis.
+Interface de operação do [apply-service](https://github.com/icaroMelo1/apply-service), onde
+as vagas localizadas, as candidaturas enviadas e as pendências que exigem decisão humana
+ficam visíveis.
 
-## O que faz
+## Descrição
 
-Mostra o funil do dia — quantas vagas foram encontradas, pontuadas, enviadas e quantas
-tiveram resposta — e separa o que trava e precisa de mim: candidatura que parou num
-formulário, etapa com prazo, resposta a revisar antes de enviar.
+Apresenta o funil do período, com o número de vagas localizadas, pontuadas, enviadas e
+respondidas, e destaca as pendências que exigem intervenção: candidatura interrompida em
+formulário, etapa com prazo definido e resposta a revisar antes do envio.
 
-## Por que existe separado
+## Motivação
 
-O serviço roda sozinho em ciclos agendados. Sem uma tela, a única forma de saber o que ele
-fez era ler log — e a decisão que importa ("isto aqui eu respondo, isto aqui descarto")
-não cabe em log.
+O serviço executa de forma autônoma em ciclos agendados. Sem interface, a única forma de
+acompanhar o resultado era a leitura de registros, formato inadequado para as decisões que
+o processo exige.
 
 ## Stack
 
-Nuxt 4 · Vue 3 · Quasar · TypeScript
+Nuxt 4, Vue 3, Quasar, TypeScript
